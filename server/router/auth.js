@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
 // Storing data in database using ASYNC-AWAIT
 require('../db/conn'); // Importing or Connecting database
@@ -25,8 +26,12 @@ router.post('/register', async(req,res) =>
         {
             return res.status(422).json({error: "User already exist"});
         }
-               
+       
         const user = new User({name, email, phone, work, password, cpassword}); 
+ 
+        // Yaha pe data save krne se pehle password hash krenge
+        // voh humne userSchema vle mei kr diya hai
+        // voh function pehle call hoga save se eisliye pre krke call kiya hai
 
         await user.save();
         res.status(201).json({message: "Registration Successful"});
@@ -53,16 +58,31 @@ router.post('/login', async(req, res) => {
         }
 
         const userLogin = await User.findOne({email : email});
-        console.log(userLogin);
 
-        if(!userLogin)
+        //console.log(userLogin);
+
+        //password compare kr rhe hai login ke time
+        //user ne jo likha hai and database mei jo save hai dono same hai ya nhi yeh cheez compare kr rhe hai ==> const isMatch = await bcrypt.compare(password, userLogin.password);
+        
+        if(userLogin)
         {
-            res.status(400).json({error: "User not registered"});
+            const isMatch = await bcrypt.compare(password, userLogin.password);
+            
+            if(isMatch)
+            {
+                res.json({message: "User Login Successfully"});
+            }
+            else
+            {
+                res.status(400).json({error: "Invalid Creditials"});
+            }
         }
         else
         {
-            res.json({message: "User Login Successfully"});
+            res.status(400).json({error: "Invalid Creditials"});
         }
+
+        
     }catch(err)
     {
         console.log(err);
