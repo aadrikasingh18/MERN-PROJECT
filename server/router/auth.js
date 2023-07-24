@@ -35,6 +35,40 @@ router.post('/register', async(req,res) =>
     }
 });
 
+// Login 
+// Condition to be checked : No empty fields
+// Email must be registered already
+// Password should be matched
+// Invalid creditianls dalenge response mei agr password ya email mei kuch galat hoga
+
+router.post('/login', async(req, res) => {
+    //console.log(req.body);
+    //res.json({message: "awesome"});
+    try{
+        const {email, password} = req.body;
+
+        if(!email || !password)
+        {
+            return res.status(400).json({error:"Pls fill complete details"})
+        }
+
+        const userLogin = await User.findOne({email : email});
+        console.log(userLogin);
+
+        if(!userLogin)
+        {
+            res.status(400).json({error: "User not registered"});
+        }
+        else
+        {
+            res.json({message: "User Login Successfully"});
+        }
+    }catch(err)
+    {
+        console.log(err);
+    }
+})
+
 module.exports = router;
     
 // actual mei name:name essa hona chahiyeh but ecmascript ke feature agr key and value same hai toh sirf ek bhi likh skte
@@ -162,3 +196,5 @@ router.post('/register', async(req,res) =>
     }
 });
 */
+
+// Jo data abhi hum postman se le rhe hai voh data user de ga form ke through
