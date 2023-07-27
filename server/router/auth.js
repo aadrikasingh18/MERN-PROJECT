@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Storing data in database using ASYNC-AWAIT
 require('../db/conn'); // Importing or Connecting database
@@ -10,6 +11,7 @@ router.get('/', (req,res) => {
     res.send(`Hello World from Server => Router.js`);
 });
 
+//REGISTRATION
 router.post('/register', async(req,res) => 
 { 
     const {name, email, phone, work, password, cpassword} = req.body;
@@ -50,6 +52,7 @@ router.post('/login', async(req, res) => {
     //console.log(req.body);
     //res.json({message: "awesome"});
     try{
+        let token;
         const {email, password} = req.body;
 
         if(!email || !password)
@@ -59,15 +62,32 @@ router.post('/login', async(req, res) => {
 
         const userLogin = await User.findOne({email : email});
 
-        //console.log(userLogin);
+        //console.log(userLogin); => userLogin se pura data mill rha hai
 
         //password compare kr rhe hai login ke time
         //user ne jo likha hai and database mei jo save hai dono same hai ya nhi yeh cheez compare kr rhe hai ==> const isMatch = await bcrypt.compare(password, userLogin.password);
-        
+
+        // 2 METHOD => VERIFY & SIGN => JWT
+
         if(userLogin)
         {
             const isMatch = await bcrypt.compare(password, userLogin.password);
+
+            //creating json web token
+            //this function returns promise
             
+            token = await userLogin.generateAuthToken();
+            //console.log(token); 
+
+            // 2 parameter hote hai cookie mei
+            // pehele mei cookie ka naam => jwtoken
+
+            // expiry ka time millisecond mei hai
+            res.cookie("jwtoken", token, {
+                expires:new Date(Date.now() + 25892000000),
+                httpOnly: true 
+            });
+
             if(isMatch)
             {
                 res.json({message: "User Login Successfully"});
@@ -218,3 +238,9 @@ router.post('/register', async(req,res) =>
 */
 
 // Jo data abhi hum postman se le rhe hai voh data user de ga form ke through
+
+// JSON WEB TOKEN => LOGIN KE TIME USE HOGA, REGISTRATION KE TIME, ABOUT PAGE PR JAB JAYENGE TBHI USE HOGA
+// AUTHENTICATION USING JWT
+// 1. GENERATE JWT TOKEN AND STORE IT IN DATABASE
+// 2. HOW TO STORE TOKEN IN THE COOKIES
+// 3. GET TOKEN FROM COOKIE AND VERIFY THE USER

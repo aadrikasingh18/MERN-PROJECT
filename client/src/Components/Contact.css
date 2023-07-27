@@ -1,0 +1,48 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    padding-top: 15px;
+    height: 60vh;
+}
+
+/* container ka code change mat krna vrna sab jage ka change ho jayega */
+
+.contact_info_item {
+    border: 2px solid rgb(0, 0, 0);
+    display: flex;
+    width: 100%;
+}
+
+.contact_info i {
+    padding: 15px;
+}
+
+.contact_form_container {
+    border: 2px solid black;
+}
+
+h4 {
+    display: flex;
+    justify-content: center;
+}
+
+.contact_form_all{
+    display: flex;
+    justify-content: space-around;
+}
+
+.contact_form_text{
+    display: flex;
+    justify-content: center;
+}
+
+.contact_form_button{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    padding-top: 15px;
+}

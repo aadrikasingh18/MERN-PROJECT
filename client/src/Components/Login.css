@@ -1,0 +1,47 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  background-color: #fff;
+  padding-top: 15px;
+  height: 60vh;
+}
+
+.login-content {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  display: flex;
+  justify-content: center;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group i {
+  padding-right: 4px;
+}
+
+.form-button {
+  display: flex;
+  justify-content: center;
+}
+
+.login-image, .login-image-link 
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-image img {
+  height: 45vh;
+  width: 45vh;
+}
