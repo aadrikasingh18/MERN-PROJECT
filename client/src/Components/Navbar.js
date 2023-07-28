@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from "../img/logo.jpg"
-import './Navbar.css'
+// import './Navbar.css'
 // import ke sath jo logo likha hai vha pr logo1/2 ya kuch bhi naam likh skte but jo path hai vha pr original naam hona chahiyeh
 
 import { NavLink } from "react-router-dom"
@@ -37,10 +37,10 @@ const Navbar = () => {
                                 <NavLink className="nav-link" to="/Contact">CONTACT</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/Login">LOGIN</NavLink>
+                                <NavLink className="nav-link" to="/Signin">LOGIN</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/Register">REGISTER</NavLink>
+                                <NavLink className="nav-link" to="/Signup">SIGNUP</NavLink>
                             </li>
                         </ul>
                     </div>
