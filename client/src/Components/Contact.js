@@ -1,5 +1,4 @@
 import React from 'react'
-// import './Contact.css'
 
 const Contact = () => {
   return (
@@ -69,7 +68,7 @@ const Contact = () => {
                       <input type="number" id="contact_form_phone" className='contact_form_phone input_field' placeholder='Your Phone Number' required="true" />
                     </div>
                     <div className="contact_form_text mt-3">
-                      <textarea className='text_field contact_form_message' placeholder='Message' cols="50" rows="8"></textarea>
+                      <textarea className='text_field contact_form_message' placeholder='Message' cols="30" rows="5"></textarea>
                     </div>
                     <div className='contact_form_button'>
                       <button type="submit" className='button contact_submit_button'>SEND MESSAGE</button>

@@ -24,10 +24,10 @@ app.use(require('./router/auth'));
 // auth.js -> .js extension eisliye nhi likha kyuki app jaha import kr rhe hai voh bhi js file hai
 
 // Middleware
-const middleware = (req, res, next) => {
-    console.log(`Hello this is my middleware checking`);
-    next();
-}
+// const middleware = (req, res, next) => {
+//     console.log(`Hello this is my middleware checking`);
+//     next();
+// }
 // MIDDLEWARE : Middleware functions are functions that have access to the request object (req), the response object(res), and the next function in the application's request response cycle. The next function is a function in the express router which when invoked, executes the middleware succeeding the current middleware.
 // Jab hum about page pr click krenge tab middleware ke help se check krenge ki user login hai ya nhi hai. Agr user login nhi toh phir hum about page pr login vla hei dikhaenge and agr login hai toh phir about page dikhega
 
@@ -37,10 +37,12 @@ app.get('/', (req,res) => {
     res.send(`Hello World from Server => App.js`);
 });
 
-app.get('/about', middleware, (req,res) => {
-    console.log(`About after middleware checking => App.js`);
-    res.send(`About`);
-});
+
+//Commenting out app.get => middleware
+// app.get('/about', middleware, (req,res) => {
+//     console.log(`About after middleware checking => App.js`);
+//     res.send(`About`);
+// });
 
 app.get('/contact', (req,res) => {
     res.send(`Contact => App.js`);

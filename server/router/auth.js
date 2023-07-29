@@ -1,43 +1,40 @@
+const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const authenticate = require("../Middleware/authenticate");
 
 // Storing data in database using ASYNC-AWAIT
 require('../db/conn'); // Importing or Connecting database
 const User = require("../model/userSchema");
 
-router.get('/', (req,res) => {
+router.get('/', (req, res) => {
     res.send(`Hello World from Server => Router.js`);
 });
 
 //REGISTRATION
-router.post('/register', async(req,res) => 
-{ 
-    const {name, email, phone, work, password, cpassword} = req.body;
-    
-    if(!name || !email || !phone || !work || !password || !cpassword)
-    {
-        return res.status(422).json({error: "Fill all the fields"}); 
+router.post('/register', async (req, res) => {
+    const { name, email, phone, work, password, cpassword } = req.body;
+
+    if (!name || !email || !phone || !work || !password || !cpassword) {
+        return res.status(422).json({ error: "Fill all the fields" });
     }
-    
-    try
-    {
-        const userExist = await User.findOne({email : email});
-        if(userExist)
-        {
-            return res.status(422).json({error: "User already exist"});
+
+    try {
+        const userExist = await User.findOne({ email: email });
+        if (userExist) {
+            return res.status(422).json({ error: "User already exist" });
         }
-       
-        const user = new User({name, email, phone, work, password, cpassword}); 
- 
+
+        const user = new User({ name, email, phone, work, password, cpassword });
+
         // Yaha pe data save krne se pehle password hash krenge
         // voh humne userSchema vle mei kr diya hai
         // voh function pehle call hoga save se eisliye pre krke call kiya hai
 
         await user.save();
-        res.status(201).json({message: "Registration Successful"});
-    }  catch(err){
+        res.status(201).json({ message: "Registration Successful" });
+    } catch (err) {
         console.log(err);
     }
 });
@@ -48,19 +45,19 @@ router.post('/register', async(req,res) =>
 // Password should be matched
 // Invalid creditianls dalenge response mei agr password ya email mei kuch galat hoga
 
-router.post('/login', async(req, res) => {
+router.post('/login', async (req, res) => {
     //console.log(req.body);
     //res.json({message: "awesome"});
-    try{
+    try {
         let token;
-        const {email, password} = req.body;
 
-        if(!email || !password)
-        {
-            return res.status(400).json({error:"Pls fill complete details"})
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ error: "Pls fill complete details" })
         }
 
-        const userLogin = await User.findOne({email : email});
+        const userLogin = await User.findOne({ email: email });
 
         //console.log(userLogin); => userLogin se pura data mill rha hai
 
@@ -69,48 +66,59 @@ router.post('/login', async(req, res) => {
 
         // 2 METHOD => VERIFY & SIGN => JWT
 
-        if(userLogin)
-        {
+        if (userLogin) {
             const isMatch = await bcrypt.compare(password, userLogin.password);
 
             //creating json web token
             //this function returns promise
-            
+
             token = await userLogin.generateAuthToken();
-            //console.log(token); 
+            console.log(token);
 
             // 2 parameter hote hai cookie mei
             // pehele mei cookie ka naam => jwtoken
 
             // expiry ka time millisecond mei hai
             res.cookie("jwtoken", token, {
-                expires:new Date(Date.now() + 25892000000),
-                httpOnly: true 
+                maxAge: new Date(Date.now() + 25892000000),
+                httpOnly: true
             });
 
-            if(isMatch)
-            {
-                res.json({message: "User Login Successfully"});
+            if (isMatch) {
+                res.json({ message: "User Login Successfully" });
             }
-            else
-            {
-                res.status(400).json({error: "Invalid Creditials"});
+            else {
+                res.status(400).json({ error: "Invalid Creditials" });
             }
         }
-        else
-        {
-            res.status(400).json({error: "Invalid Creditials"});
+        else {
+            res.status(400).json({ error: "Invalid Creditials" });
         }
 
-        
-    }catch(err)
-    {
+
+    } catch (err) {
         console.log(err);
     }
+});
+
+// about us ka page
+// router.get('/about', middleware, (req,res) => {
+//     console.log(`About after middleware checking => App.js`);
+//     res.send(`About`);
+// });
+router.get('/about', authenticate, (req, res) => {
+    console.log(`About Hello`);
+    res.send(req.rootUser);
+});
+
+router.get('/getdata', authenticate, (req, res) => {
+    console.log(`Hello my about`);
+    res.send(req.rootUser);
+
 })
 
 module.exports = router;
-    
+
 // actual mei name:name essa hona chahiyeh but ecmascript ke feature agr key and value same hai toh sirf ek bhi likh skte
 
 // email : email => jo left side ka email hai voh database ke field vla email hai and jo right side mei hai voh jo user de rha hai voh registration ke time, agr dono email match kr gye tb it is user exist
@@ -123,7 +131,7 @@ module.exports = router;
 // Essa humne app.js mei likha tha eisse app ko puri functionalities express ki mill rhi thi
 // Similarly, yaha pr hum yeh "const router = express.Router();" likh rhe hai
 // Eisse likhne se router ko express ke Router ke sari functionalities mill rhi hai
-// Jaise vaha app.get krke likha tha vaise yaha router.get krke likhenge 
+// Jaise vaha app.get krke likha tha vaise yaha router.get krke likhenge
 
 // App mei eise likhte the
 // app.get('/', (req,res) => {
@@ -156,14 +164,14 @@ module.exports = router;
 // Database pr data store krne ke liye sabse zyada zaruri hai ki jo user hai voh exist nhi krna chahiyeh pehle se....uska email and phone no unique hona chahiyeh
 
 
-// // Storing data in database using JAVASCRIPT PROMISES 
-/*router.post('/register', (req,res) => 
+// // Storing data in database using JAVASCRIPT PROMISES
+/*router.post('/register', (req,res) =>
 {
     //console.log(req.body);
     //console.log(req.body.name);
     //console.log(req.body.work);
     // jaise upr likha hai vaise bhi data display kr skte but usmei pura req.body.name esse pura likhna padega
-    // Agr sirf name likhne se data jaye that will be better => that can be done using object destructuring  
+    // Agr sirf name likhne se data jaye that will be better => that can be done using object destructuring
     const {name, email, phone, work, password, cpassword} = req.body;
     //console.log(name);
     //console.log(email);
@@ -177,7 +185,7 @@ module.exports = router;
 
     //See Mongodb video for learning more about these functions...
     // findOne and save function will return promise
-    User.findOne({email : email}).then((userExist) => 
+    User.findOne({email : email}).then((userExist) =>
     {
         if(userExist)
         {
@@ -185,13 +193,13 @@ module.exports = router;
         }
 
         const user = new User({name, email, phone, work, password, cpassword}); // user ka data create ho chuka hai, new keyword ke madat se new user create kr rhe hai
-        user.save().then(() => 
+        user.save().then(() =>
         {
             res.status(201).json({message: "Registration Successful"});
         }).catch (err => res.status(500).json({ error: "Failed to register"}));
 
     }).catch(err => {console.log(err);
-    }); 
+    });
 });
 
 module.exports = router;*/
@@ -200,13 +208,13 @@ module.exports = router;*/
 //ASYNC AWAIT => LONG WAY
 // UPR BHI ASYNC AWAIT MEI LIKHA HAI => SHORT WAY
 /*
-router.post('/register', async(req,res) => 
-{ 
+router.post('/register', async(req,res) =>
+{
     const {name, email, phone, work, password, cpassword} = req.body;
-    
+
     if(!name || !email || !phone || !work || !password || !cpassword)
     {
-        return res.status(422).json({error: "Fill all the fields"}); 
+        return res.status(422).json({error: "Fill all the fields"});
     }
     //.then se pta chalta hai ki voh promise hai & .then ko replace krke await likhenge
 
@@ -219,8 +227,8 @@ router.post('/register', async(req,res) =>
         {
             return res.status(422).json({error: "User already exist"});
         }
-               
-        const user = new User({name, email, phone, work, password, cpassword}); 
+
+        const user = new User({name, email, phone, work, password, cpassword});
 
         const userRegister = await user.save();
         if(userRegister)
