@@ -12,30 +12,30 @@ const Signin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const loginUser =  async (e) => {
+    const loginUser = async (e) => {
         e.preventDefault();
 
         const res = await fetch('/login', {
-            method:"POST",
-            headers:{
-                "Content-Type" : "application/json"
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 email,
                 password
             })
         });
+        
         const data = res.json();
-        if(res.status === 400 || !data){
+        if (res.status === 400 || !data) {
             window.alert("INVALID CREDENTIALS");
             console.log("INVALID CREDENTIALS");
-          }
-          else
-          {
+        }
+        else {
             window.alert("LOGIN SUCCESSFUL");
-            console.log("LOGIN SUCCESSFUL");  
+            console.log("LOGIN SUCCESSFUL");
             navigate("/");
-          }
+        }
     }
     return (
         <>

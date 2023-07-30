@@ -41,7 +41,7 @@ const Signup = () => {
         {
           window.alert("REGISTRATION SUCCESSFUL");
           console.log("REGISTRATION SUCCESSFUL");  
-          navigate("/login");
+          navigate("/Signin");
         }
   }
 

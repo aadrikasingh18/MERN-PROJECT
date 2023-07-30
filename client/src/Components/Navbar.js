@@ -37,10 +37,13 @@ const Navbar = () => {
                                 <NavLink className="nav-link" to="/Contact">CONTACT</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/Signin">LOGIN</NavLink>
+                                <NavLink className="nav-link" to="/Signin">SIGNIN</NavLink>
                             </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/Signup">SIGNUP</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/Logout">LOGOUT</NavLink>
                             </li>
                         </ul>
                     </div>

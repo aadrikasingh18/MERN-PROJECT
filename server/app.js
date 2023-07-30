@@ -4,9 +4,10 @@ const dotenv = require('dotenv');
 // dotenv => we are using to secure our password and api keys
 
 const express = require('express');
-
+// stackoverflow se dekha
+const cookieParser = require('cookie-parser');
 const app = express();
-
+app.use(cookieParser());
 dotenv.config({path: './config.env'}); // ek baar eisko app.js mei likh diya toh process.env khi bhi use kr skte zaruri nhi hai baar baar vha likho jaha use kr rhe hai
 
 require('./db/conn');
@@ -44,9 +45,9 @@ app.get('/', (req,res) => {
 //     res.send(`About`);
 // });
 
-app.get('/contact', (req,res) => {
-    res.send(`Contact => App.js`);
-});
+// app.get('/contact', (req,res) => {
+//     res.send(`Contact => App.js`);
+// });
 
 app.get('/signin', (req,res) => {
     res.send(`Signin => App.js`);

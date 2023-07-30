@@ -13,13 +13,14 @@ const About = () => {
         method: "GET",
         headers: {
           Accept: "application/json",
-          // Accept: "application/json", check kro "Accept" hoga ya Accept
           "Content-Type": "application/json"
         },
         credentials: "include"
       });
+
       const data = await res.json();
       console.log(data);
+      setUserData(data);
 
       if (!res.status === 200) {
         const error = new Error(res.error);
@@ -51,7 +52,7 @@ const About = () => {
             </div>
             <div className="col-md-6">
               <div className="profile-head">
-              {/* <h5>Alisha Rastogi</h5> */}
+                {/* <h5>Alisha Rastogi</h5> */}
                 <h5>{userData.name}</h5>
                 {/* <h6>WEB DEVELOPER</h6> */}
                 <h6>{userData.work}</h6>

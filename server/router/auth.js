@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
+const cookieParser = require("cookie-parser")
+router.use(cookieParser())
 const bcrypt = require('bcryptjs');
-const authenticate = require("../Middleware/authenticate");
+const authenticate = require("../middleware/authenticate");
 
 // Storing data in database using ASYNC-AWAIT
 require('../db/conn'); // Importing or Connecting database
@@ -69,23 +71,22 @@ router.post('/login', async (req, res) => {
         if (userLogin) {
             const isMatch = await bcrypt.compare(password, userLogin.password);
 
-            //creating json web token
-            //this function returns promise
-
-            token = await userLogin.generateAuthToken();
-            console.log(token);
-
-            // 2 parameter hote hai cookie mei
-            // pehele mei cookie ka naam => jwtoken
-
-            // expiry ka time millisecond mei hai
-            res.cookie("jwtoken", token, {
-                maxAge: new Date(Date.now() + 25892000000),
-                httpOnly: true
-            });
-
             if (isMatch) {
                 res.json({ message: "User Login Successfully" });
+                //creating json web token
+                //this function returns promise
+
+                token = await userLogin.generateAuthToken();
+                console.log(token);
+
+                // 2 parameter hote hai cookie mei
+                // pehele mei cookie ka naam => jwtoken
+
+                // expiry ka time millisecond mei hai
+                res.cookie("jwtoken", token, {
+                    maxAge: new Date(Date.now() + 25892000000),
+                    httpOnly: true
+                });
             }
             else {
                 res.status(400).json({ error: "Invalid Creditials" });
@@ -111,11 +112,47 @@ router.get('/about', authenticate, (req, res) => {
     res.send(req.rootUser);
 });
 
+//getting user data for contact and home page
 router.get('/getdata', authenticate, (req, res) => {
-    console.log(`Hello my about`);
+    console.log(`Hello get data`);
     res.send(req.rootUser);
 
-})
+});
+
+//contact us page
+
+router.post('/contact', authenticate, async(req,res) => 
+{
+    try{
+        const{ name, email, phone, message } = req.body;
+        if(!name ||  !email || !phone || !message)
+        {
+            console.log("error in contact form");
+            return res.json({error: "plzz fill the contact form"});
+        }
+
+        const userContact = await User.findOne({ _id: req.userID});
+        
+        if(userContact){
+            const userMessage = await userContact.addMessage(name, email, phone, message);
+
+            await userContact.save(); 
+
+            res.status(201).json({message: "user contact successfully"});
+        }
+    }catch(error){
+        console.log(error);  
+    }
+});
+
+// logout ka page
+
+router.get('/logout', (req, res) => {
+    console.log(`Logout Hello`);
+    res.clearCookie('jwtoken', {path:'/'});
+    res.status(200).send('User Logout');
+});
+
 
 module.exports = router;
 
