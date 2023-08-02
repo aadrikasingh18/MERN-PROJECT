@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 const Contact = () => {
 
-  const [userData, setUserData] = useState({ name: "", email: "", phone: "", message: "" });
+  const [userData, setUserData] = useState({ name: "", email: "", phone: "", work: "", message: "" });
   const userContact = async () => {
     try {
       // yaha pr (req, res) vla res nhi hai dusra res hai
@@ -16,7 +16,7 @@ const Contact = () => {
 
       const data = await res.json();
       console.log(data);
-      setUserData({ ...userData, name: data.name, email: data.email, phone: data.phone });
+      setUserData({ ...userData, name: data.name, email: data.email, phone: data.phone, work: data.work });
 
       if (!res.status === 200) {
         const error = new Error(res.error);
@@ -44,7 +44,7 @@ const Contact = () => {
   const contactForm = async (e) => {
     e.preventDefault();
 
-    const { name, email, phone, message } = userData;
+    const { name, email, phone, work, message } = userData;
 
 
     const res = await fetch('/contact', {
@@ -53,7 +53,7 @@ const Contact = () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        name, email, phone, message
+        name, email, phone, work, message
       })
     });
 
@@ -83,7 +83,7 @@ const Contact = () => {
                         Phone
                       </div>
                       <div className='contact_info_text'>
-                        180-800-111
+                        {userData.phone}
                       </div>
                     </div>
                   </div>
@@ -95,18 +95,18 @@ const Contact = () => {
                         Email
                       </div>
                       <div className='contact_info_text'>
-                        xyz@gmail.com
+                        {userData.email}
                       </div>
                     </div>
                   </div>
                   <div className='contact_info_item d-flex justify-content-start align-items-center'>
-                    <i class="zmdi zmdi-pin"></i>
+                    <i class="zmdi zmdi-case"></i>
                     <div className='contact_info_content'>
                       <div className='contact_info_title'>
-                        Address
+                        Work
                       </div>
                       <div className='contact_info_text'>
-                        Perth
+                        {userData.work}
                       </div>
                     </div>
                   </div>
@@ -122,8 +122,8 @@ const Contact = () => {
             <div className="row">
               <div className="col-lg-10 offset-lg-1">
                 <div className="contact_form_container py-4">
-                  <h4>
-                    GET IN TOUCH
+                  <h4 style={{color:'#97cbfa'}}>
+                    SHARE YOUR FEEDBACK
                   </h4>
                   <form method="POST" id="contact_form">
                     <div className='contact_form_inputs d-flex flex-md-row flex-column justify-content-between'>

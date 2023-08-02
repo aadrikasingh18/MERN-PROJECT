@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import girl from "../img/girl1.jpg"
+import person from "../img/person.jpg"
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -45,7 +45,7 @@ const About = () => {
           <div className="row">
             <div className="col-md-4">
               <div className="profile-img">
-                <img src={girl} alt="girl" />
+                <img src={person} alt="person" />
                 {/* Agr 2 user ho and name ke basis pr pic change krne hai
                 <img src={userData.name === "Vinod Bhadur Thapa ? thapapic : aboutpis"} alt ="thapa"*/}
                 {/* thapapic and about pic import krenge jaise girl ki import ki hai */}
@@ -56,24 +56,14 @@ const About = () => {
                 {/* <h5>Alisha Rastogi</h5> */}
                 <h5>{userData.name}</h5>
                 {/* <h6>WEB DEVELOPER</h6> */}
-                <h6>{userData.work}</h6>
-                <p className='profile-rating mt-3 mb-5'>RANKINGS : <span>1/10</span></p>
+                <h6>EMAIL : {userData.email}</h6>
+                <h6>PROFESSION : {userData.work}</h6>
+                <h6>PHONE : {userData.phone}</h6>
+                {/* <p className='profile-rating mt-3 mb-5'>RANKINGS : <span>1/10</span></p> */}
               </div>
             </div>
             <div className="col-md-2">
               <input type="submit" className='profile-edit-btn' name="btnAddMore" value="Edit Profile" />
-            </div>
-
-            <div className="row" >
-              {/* left side url */}
-              <div className="col-md-6">
-                <div className="profile-work">
-                  <p>WORK LINK</p>
-                  <a href='https://auth.geeksforgeeks.org/user/aadrika18' target="_blank" rel="noopener noreferrer">GFG</a><br />
-                  <a href='https://www.linkedin.com/in/aadrika-singh-035219205/' target="_blank" rel="noopener noreferrer">Linkedin</a><br />
-                  <a href='https://github.com/aadrikasingh18' target="_blank" rel="noopener noreferrer">Github</a><br />
-                </div>
-              </div>
             </div>
           </div>
         </form>

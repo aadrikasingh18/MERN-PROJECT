@@ -31,9 +31,8 @@ const Home = () => {
     <>
       <div className="home-page">
         <div className="home-div">
-          <p className="pt-5">WELCOME</p>
-          <h1>{userName}</h1>
-          <h2>{show ? 'Happy to see you back' : 'We are the MERN developers'}</h2>
+          <h3>Dear {userName}</h3>
+          <h2>{show ? 'Happy to see you here!' : 'WELCOME'}</h2>
         </div>
       </div>
     </>
