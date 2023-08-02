@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const cookieParser = require("cookie-parser")
@@ -72,21 +71,19 @@ router.post('/login', async (req, res) => {
             const isMatch = await bcrypt.compare(password, userLogin.password);
 
             if (isMatch) {
-                res.json({ message: "User Login Successfully" });
                 //creating json web token
                 //this function returns promise
 
                 token = await userLogin.generateAuthToken();
-                console.log(token);
+                console.log("generated token is " + token);
 
                 // 2 parameter hote hai cookie mei
                 // pehele mei cookie ka naam => jwtoken
-
                 // expiry ka time millisecond mei hai
                 res.cookie("jwtoken", token, {
-                    maxAge: new Date(Date.now() + 25892000000),
+                    expires: new Date(Date.now() + 25892000000),
                     httpOnly: true
-                });
+                }).json({ message: "User Login Successfully" });;
             }
             else {
                 res.status(400).json({ error: "Invalid Creditials" });
@@ -95,8 +92,6 @@ router.post('/login', async (req, res) => {
         else {
             res.status(400).json({ error: "Invalid Creditials" });
         }
-
-
     } catch (err) {
         console.log(err);
     }
@@ -116,32 +111,28 @@ router.get('/about', authenticate, (req, res) => {
 router.get('/getdata', authenticate, (req, res) => {
     console.log(`Hello get data`);
     res.send(req.rootUser);
-
 });
 
 //contact us page
-
-router.post('/contact', authenticate, async(req,res) => 
-{
-    try{
-        const{ name, email, phone, message } = req.body;
-        if(!name ||  !email || !phone || !message)
-        {
+router.post('/contact', authenticate, async (req, res) => {
+    try {
+        const { name, email, phone, message } = req.body;
+        if (!name || !email || !phone || !message) {
             console.log("error in contact form");
-            return res.json({error: "plzz fill the contact form"});
+            return res.json({ error: "plzz fill the contact form" });
         }
 
-        const userContact = await User.findOne({ _id: req.userID});
-        
-        if(userContact){
+        const userContact = await User.findOne({ _id: req.userID });
+
+        if (userContact) {
             const userMessage = await userContact.addMessage(name, email, phone, message);
 
-            await userContact.save(); 
+            await userContact.save();
 
-            res.status(201).json({message: "user contact successfully"});
+            res.status(201).json({ message: "user contact successfully" });
         }
-    }catch(error){
-        console.log(error);  
+    } catch (error) {
+        console.log(error);
     }
 });
 
@@ -149,7 +140,7 @@ router.post('/contact', authenticate, async(req,res) =>
 
 router.get('/logout', (req, res) => {
     console.log(`Logout Hello`);
-    res.clearCookie('jwtoken', {path:'/'});
+    res.clearCookie('jwtoken', { path: '/' });
     res.status(200).send('User Logout');
 });
 

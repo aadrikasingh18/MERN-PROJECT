@@ -34,6 +34,7 @@ const About = () => {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line
     callAboutPage();
   }, []);
 
@@ -68,9 +69,9 @@ const About = () => {
               <div className="col-md-6">
                 <div className="profile-work">
                   <p>WORK LINK</p>
-                  <a href='https://auth.geeksforgeeks.org/user/aadrika18' target="_blank">GFG</a><br />
-                  <a href='https://www.linkedin.com/in/aadrika-singh-035219205/' target="_blank">Linkedin</a><br />
-                  <a href='https://github.com/aadrikasingh18' target="_blank">Github</a><br />
+                  <a href='https://auth.geeksforgeeks.org/user/aadrika18' target="_blank" rel="noopener noreferrer">GFG</a><br />
+                  <a href='https://www.linkedin.com/in/aadrika-singh-035219205/' target="_blank" rel="noopener noreferrer">Linkedin</a><br />
+                  <a href='https://github.com/aadrikasingh18' target="_blank" rel="noopener noreferrer">Github</a><br />
                 </div>
               </div>
             </div>
