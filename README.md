@@ -8,10 +8,7 @@
 > 5. Created user Schema, did routing in the backend, and got data back from POSTMAN
 > 6. Storing data in the database using JS promises or Async-await
 > 7. Posting Registration data to MongoDB
+
 > Till 28/07/23
 > Client Side created
-
-
-
-
-Solved the error and now login functionality is working
+> Solved the error and now the login functionality is working
