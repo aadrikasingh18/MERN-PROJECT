@@ -31,8 +31,8 @@ const Home = () => {
     <>
       <div className="home-page">
         <div className="home-div">
-          <h3>Dear {userName}</h3>
-          <h2>{show ? 'Happy to see you here!' : 'WELCOME'}</h2>
+          <h3>Hello {userName}</h3>
+          <h2>{show ? 'Happy to see you here!' : 'Welcome here!'}</h2>
         </div>
       </div>
     </>

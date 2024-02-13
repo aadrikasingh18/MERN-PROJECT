@@ -1,4 +1,5 @@
-// const mongoose = require('mongoose');
+// CLIENT START => npm start
+// SERVER START => nodemon app.js
 
 const dotenv = require('dotenv');
 // dotenv => we are using to secure our password and api keys
@@ -17,7 +18,7 @@ app.use(express.json());
 // const User = require('./model/userSchema');
 // Comment out eisliye kiya kyuki we do not need it right now. This was basically written to demonstrate how to import user schema
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 // Linking the router to app.js
 // In router we are creating routes , this is backend router
